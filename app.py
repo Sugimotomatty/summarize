@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 from wtforms import Form, FloatField, SubmitField, validators, ValidationError,StringField,TextAreaField
 import numpy as np
 
+import summarize 
+
 app = Flask(__name__)
 
 # Flaskとwtformsを使い、index.html側で表示させるフォームを構築する
@@ -20,9 +22,16 @@ def predicts():
         if form.validate() == False:
             return render_template('index.html', form=form)
         else:            
-            EnterSentence = form.EnterSentence.data   
-            return render_template('result.html', EnterSentence=EnterSentence) #一つ目のEnterSentenceはresult.html内でのEnterSenteceに対応
-                                                                                #二つ目のEnterSentenceはこのすぐ上のEnterSentenceに対応       
+            EnterSentence = form.EnterSentence.data
+
+            result = summarize.summa(EnterSentence) #ここでsummarizeファイルにおけるsumma関数を呼び出し
+
+            result1 =""
+            for fragment in result:
+                result1+=fragment
+
+            return render_template('result.html', result = result1) #resultはresult.html内でのresultに対応
+                                                                    #result1はこのすぐ上のresultに対応       
 
     
     elif request.method == 'GET':
