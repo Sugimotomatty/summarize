@@ -1,5 +1,10 @@
 # summarize
 haitlab8Awebアプリ開発
+
+現段階ではテストの文章をうまく要約することはできました。しかしそれ以外の文章がうまくいくかは
+わかりません。例外処理に関しては全然書いてないのでそことあとはuiにもっとこだわる必要があるかなと思います
+
+
 参考にしたサイト
 
 FlaskでFormを使うための、必要最低限の知識
@@ -22,26 +27,21 @@ https://self-development.info/mecab%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88
 ここのpathの通し方については別途説明
 環境変数をクリックしてからシステム環境変数のとこでPathを選択
 それで編集を押して次に新規を押して、MeCabの下にあるbinのpathをコピーして、そこに貼り付ける
+再起動したらまたもっかいpath通さないといけないかもです
 
 
+出ていたエラー
 
-出ているエラー
-
+1,
 ImportError: DLL load failed while importing _MeCab: 指定されたモジュールが見つかりません。
+
 http://harmonizedai.com/article/mecabdll-load-failed/
 
+【解決策】上のサイトにあるようにいろんなとこにlibmecab.dllをコピーしたらエラーが取れました
+
+2,
 Non-UTF-8 code starting with '\xe3'
+
+文字を取り込むときに文字数が長すぎたため分割したらこのエラーは取れました
+
 https://stabucky.com/wp/archives/13198
-
-とりあえずここに書かれているようにMeCabの下にあるbinの下にあるlibmecab.dllをAnaconda3\Lib\site-packages”
-に移動させてみたけどうまくいかなかった
-
-
-C:\Program Files\MeCabの中身をC:\Users\shanb\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\site-packages\MeCab
-に移動させてみたけどダメだった
-
-C:\Program Files\MeCab\bin￥
-
-
-いろいろ思うにこの作業をしなければならないみたいです
-https://own-search-and-study.xyz/2017/06/28/mecab%e3%82%92%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%97python%e3%81%8b%e3%82%89%e4%bd%bf%e3%81%86%e6%96%b9%e6%b3%95%e3%81%be%e3%81%a8%e3%82%81/
