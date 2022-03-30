@@ -9,6 +9,10 @@
     <form method="post">
         {{ form.EnterSentence.label }}<br>
         <p>{{ form.EnterSentence (cols="50", rows="20")}}</p>
+        <p>{{ form.upload_file (cols="50", rows="20")}}</p>
+        {% for error in form.EnterSentence.errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
         <br>
         
         {{ form.submit }}
