@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 from wtforms import Form, FloatField, SubmitField, validators, ValidationError,StringField,TextAreaField
 import numpy as np
 
@@ -13,6 +13,8 @@ class EnterForm(Form):
 
     # html側で表示するsubmitボタンの表示
     submit = SubmitField("判定")
+
+x = ''
 
 @app.route('/', methods = ['GET', 'POST'])
 def predicts():
@@ -29,6 +31,8 @@ def predicts():
             result1 =""
             for fragment in result:
                 result1+=fragment
+            global x
+            x = result1
 
             return render_template('result.html', result = result1) #resultはresult.html内でのresultに対応
                                                                     #result1はこのすぐ上のresultに対応       
@@ -37,6 +41,15 @@ def predicts():
     elif request.method == 'GET':
 
         return render_template('index.html', form=form)
+
+@app.route('/export', methods=['GET'])
+def download():
+    global x
+    response = make_response()
+    response.data = x
+    response.headers['Content-Disposition'] = 'attachment; filename=test.txt'
+    response.mimetype = 'text/plain'
+    return response
 
 if __name__ == "__main__":
     app.run()
