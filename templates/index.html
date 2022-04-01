@@ -1,16 +1,43 @@
-<title>Translate App</title>
-<style>
-    #wrapper {
-        text-align: center;
-    }
-</style>
-
-<div id="wrapper">
-    <form method="post">
-        {{ form.EnterSentence.label }}<br>
-        <p>{{ form.EnterSentence (cols="50", rows="20")}}</p>
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>文章要約アプリ</title>
+        <meta name="description" content="長い文章を短く要約するアプリ">  
+    </head>
+    
+    <header>
         <br>
-        
-        {{ form.submit }}
-    </form>
-</div>
+        <h1>NUTSHELL</h1><br>
+        <h4>文章要約アプリ</h4>
+    </header>
+
+    <br>
+    
+    <body>
+        <div id="wrapper">
+            <form method="post">
+                {{ form.EnterSentence.label }}<br>
+                <p>{{ form.EnterSentence (cols="150", rows="12")}}</p>
+                <br>
+                {{ form.submit }}
+            </form>
+        </div>
+    </body>
+    <style>
+        header{
+            color: azure;
+            font-size: 40px;
+            text-align: left;
+            height: 400px;
+            background-image: url("images/banner-4833105_1920.jpg");
+            line-height:0;
+        }
+        body{
+            text-align: center;
+        }
+
+    </style>
+
+
+
