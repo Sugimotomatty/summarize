@@ -11,6 +11,10 @@ class CheckORField(object):
         self.message = message
 
     def __call__(self, form, field):
+        # print(dir(form['upload_file']))
+        a = form['upload_file'].gettext
+        print(a)
+        print(dir(a))
         if len(form['EnterSentence'].data) == 0 and form['upload_file'].data.split('.')[-1] != 'txt':
             raise ValidationError(self.message)
 
