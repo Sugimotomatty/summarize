@@ -12,9 +12,9 @@ class CheckORField(object):
 
     def __call__(self, form, field):
         # print(dir(form['upload_file']))
-        a = form['upload_file'].gettext
-        print(a)
-        print(dir(a))
+        # a = form['upload_file'].description
+        # print(a)
+        # print(dir(a))
         if len(form['EnterSentence'].data) == 0 and form['upload_file'].data.split('.')[-1] != 'txt':
             raise ValidationError(self.message)
 
@@ -31,7 +31,8 @@ class EnterForm(Form):
 def predicts():
     form = EnterForm(request.form)
     if request.method == 'POST':
-        print(form.EnterSentence.data)
+        # print(form.EnterSentence.data)
+        # print('ijsdac', request.files['upload_file'].read().decode('utf-8'))
         if form.validate() == False:
             return render_template('index.html', form=form)
         else:            
