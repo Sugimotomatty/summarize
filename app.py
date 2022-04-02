@@ -6,46 +6,40 @@ import summarize
 
 app = Flask(__name__)
 
-class CheckORField(object):
-    def __init__(self, message):
-        self.message = message
-
+class CheckForm(object):
     def __call__(self, form, field):
-        # print(dir(form['upload_file']))
-        # a = form['upload_file'].description
-        # print(a)
-        # print(dir(a))
-        # print(form['upload_file'].default)
-        # print(dir(form['upload_file']))
-        print(request.files['upload_fike'].name)
-        print(dir(request.files['upload_file']))
-
-        if len(form['EnterSentence'].data) == 0 and form['upload_file'].data is None:
-            raise ValidationError(self.message)
+        n_str = len(form['EnterSentence'].data)
+        extension = request.files['upload_file'].filename.split('.')[-1]
+        if n_str == 0:
+            if extension == '':
+                raise ValidationError('文の入力かtxtファイルのアップロードは必須です')
+            elif extension != 'txt':
+                raise ValidationError('.txtファイルをアップロードしてください')
+        else:
+            if extension != '':
+                raise ValidationError('文かtxtファイルいずれか一つを入力してください')
 
 # Flaskとwtformsを使い、index.html側で表示させるフォームを構築する
 class EnterForm(Form):
-    # EnterSentence = TextAreaField('要約したい文を貼り付け、または入力してください', [validators.InputRequired("この項目は入力必須です")])
-    EnterSentence = TextAreaField('要約したい文を貼り付け、または入力してください', [CheckORField(message='文章の入力かtxtファイルのアップロードは必須です')])
-    # EnterSentence = TextAreaField()
-    # upload_file = FileField([validators.regexp(u'^[^/\\]\.txt$')])
-    upload_file = FileField([validators.regexp('.+\.txt$')])
+    EnterSentence = TextAreaField('要約したい文を入力, もしくは.txtファイルをアップロードしてください', [CheckForm()])
+    upload_file = FileField()
 
     # html側で表示するsubmitボタンの表示
-    submit = SubmitField("判定")
+    submit = SubmitField("要約")
 
 @app.route('/', methods = ['GET', 'POST'])
 def predicts():
     form = EnterForm(request.form)
     if request.method == 'POST':
-        # print(form.EnterSentence.data)
-        # print('ijsdac', request.files['upload_file'].read().decode('utf-8'))
         if form.validate() == False:
             return render_template('index.html', form=form)
         else:            
-            EnterSentence = form.EnterSentence.data
+            if len(form['EnterSentence'].data) > 0:
+                sentence = form.EnterSentence.data
+            else:
+                sentence = request.files['upload_file'].read().decode('utf-8')
 
-            result = summarize.summa(EnterSentence) #ここでsummarizeファイルにおけるsumma関数を呼び出し
+            result = summarize.summa(sentence) #ここでsummarizeファイルにおけるsumma関数を呼び出し
 
             result1 =""
             for fragment in result:
