@@ -15,14 +15,21 @@ class CheckORField(object):
         # a = form['upload_file'].description
         # print(a)
         # print(dir(a))
-        if len(form['EnterSentence'].data) == 0 and form['upload_file'].data.split('.')[-1] != 'txt':
+        # print(form['upload_file'].default)
+        # print(dir(form['upload_file']))
+        print(request.files['upload_fike'].name)
+        print(dir(request.files['upload_file']))
+
+        if len(form['EnterSentence'].data) == 0 and form['upload_file'].data is None:
             raise ValidationError(self.message)
 
 # Flaskとwtformsを使い、index.html側で表示させるフォームを構築する
 class EnterForm(Form):
     # EnterSentence = TextAreaField('要約したい文を貼り付け、または入力してください', [validators.InputRequired("この項目は入力必須です")])
     EnterSentence = TextAreaField('要約したい文を貼り付け、または入力してください', [CheckORField(message='文章の入力かtxtファイルのアップロードは必須です')])
-    upload_file = FileField()
+    # EnterSentence = TextAreaField()
+    # upload_file = FileField([validators.regexp(u'^[^/\\]\.txt$')])
+    upload_file = FileField([validators.regexp('.+\.txt$')])
 
     # html側で表示するsubmitボタンの表示
     submit = SubmitField("判定")
